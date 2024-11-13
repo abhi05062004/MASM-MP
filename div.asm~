@@ -1,0 +1,109 @@
+assume cs:code,ds:data
+data segment
+a db 0ah,0dh,"Enter first number:$"
+b db 0ah,0dh,"Enter second number:$"
+g db 0ah,0dh,"The Quotient is :$"
+d db 0ah,0dh,"The Remainder is :$"
+data ends
+print macro
+add dl,30h
+mov ah,02h
+int 21h
+endm
+display macro p
+lea dx,p
+mov ah,09h
+int 21h
+endm
+read macro
+mov ah,01h
+int 21h
+sub al,30h
+endm
+code segment
+start:
+mov cx,data
+mov ds,cx
+display a
+read 
+mov ah,00h
+mov cx,03e8h
+mul cx
+mov bx,ax
+read
+mov ah,00h
+mov cx,0064h
+mul cx
+add bx,ax
+read
+mov ah,00h
+mov cx,000ah
+mul cx
+add bx,ax
+read
+mov ah,00h
+add bx,ax
+display b
+read
+mov cl,0ah
+mul cl
+mov cl,al
+read
+add cl,al
+mov ch,00h
+display g
+mov dx,0000h
+mov ax,bx
+div cx
+mov cl,dx
+mov dx,0000h
+mov cx,03e8h
+div cx
+mov bx,dx
+mov dx,ax
+print
+mov ax,bx
+mov dx,0000h
+mov cx,0064h
+div cx
+mov bx,dx
+mov dx,ax
+print
+mov ax,bx
+mov dx,0000h
+mov cx,000ah
+div cx
+mov bx,dx
+mov dx,ax
+print
+display d
+mov ax,di
+mov dx,0000h
+mov cx ,03e8h
+div cx
+mov bx,dx
+mov dx,ax
+print
+mov ax,bx
+mov dx,0000h
+mov cx,0064h
+div cx
+mov bx,dx
+mov dx,ax
+print
+mov ax,bx
+mov dx,0000h
+mov cx,000ah
+div cx
+mov bx,dx
+mov dx,ax
+print
+mov dx,bx
+print
+mov ah,4ch
+int 21h
+code ends
+end start
+
+
+
